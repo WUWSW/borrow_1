@@ -11,197 +11,159 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _obscureText = true; // สำหรับการซ่อน/แสดงรหัสผ่าน
+  bool _obscureText = true;
 
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
+  void _togglePasswordVisibility() {
+    setState(() => _obscureText = !_obscureText);
   }
 
   void _handleLogin() {
     if (_formKey.currentState!.validate()) {
-      String username = _usernameController.text;
-      String password = _passwordController.text;
-
-      // ในแอปจริง คุณจะส่ง username/password ไปตรวจสอบกับ Backend ที่นี่
-      // print('Attempting login with: Username: $username, Password: $password');
-
-      // แสดง SnackBar เพื่อจำลองว่า Login สำเร็จ
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Login Successful! Welcome $username'),
-          backgroundColor: Colors.green,
-        ),
+        const SnackBar(content: Text('Login Successful!')),
       );
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen())); // ไปหน้าถัดไป
     }
   }
 
-  // ฟังก์ชันสลับการมองเห็นรหัสผ่าน
-  void _togglePasswordVisibility() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
-
- @override
+  @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      backgroundColor: Colors.white, 
+      backgroundColor: Colors.white,
       body: Center(
-        child: SingleChildScrollView( 
-          padding: const EdgeInsets.symmetric(horizontal: 40.0), 
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+            horizontal: screenWidth * 0.1, // ปรับความกว้างขอบตามจอ
+            vertical: screenHeight * 0.05,
+          ),
           child: Form(
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 Image.asset(
-                  'lib/img/dice.png', 
-                  width: 140, 
+                  'img/dice.png',
+                  width: screenWidth * 0.2, // ปรับภาพให้สัมพันธ์กับจอ
                 ),
+                SizedBox(height: screenHeight * 0.02),
 
-                const SizedBox(height: 10),
                 Text(
                   'LOGIN',
                   style: TextStyle(
-                    fontSize: 38,
+                    fontSize: screenWidth * 0.07,
                     fontWeight: FontWeight.bold,
                     color: Colors.deepOrange,
-                    letterSpacing: 2,
                   ),
                 ),
                 Text(
                   'TO BOARD GAME SS',
                   style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[600],
+                    fontSize: screenWidth * 0.03,
+                    color: Colors.deepOrange.shade300,
                   ),
                 ),
-                const SizedBox(height: 50),
+                SizedBox(height: screenHeight * 0.04),
 
+                // Username field
                 TextFormField(
                   controller: _usernameController,
                   decoration: InputDecoration(
-                    hintText: 'Username', // เปลี่ยน Text
-                    hintStyle: TextStyle( // เปลี่ยนสี
-                      color: Colors.orange.shade800, 
-                      fontWeight: FontWeight.w500,
+                    hintText: 'username',
+                    hintStyle: TextStyle(color: Colors.red.shade400),
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: screenHeight * 0.015,
+                      horizontal: screenWidth * 0.05,
                     ),
-                    filled: true,
-                    fillColor: Colors.white,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(color: Colors.orange.shade200, width: 1.5),
+                      borderSide:
+                          BorderSide(color: Colors.orange.shade200, width: 1.5),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(color: Colors.deepOrange, width: 2),
+                      borderSide:
+                          const BorderSide(color: Colors.deepOrange, width: 2),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your Username';
-                    }
-                    return null;
-                  },
+                  validator: (value) =>
+                      value!.isEmpty ? 'Please enter your Username' : null,
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: screenHeight * 0.015),
 
+                // Password field
                 TextFormField(
                   controller: _passwordController,
                   obscureText: _obscureText,
                   decoration: InputDecoration(
-                    hintText: 'Password', // เปลี่ยน Text
-                    hintStyle: TextStyle( // เปลี่ยนสี
-                      color: Colors.red.shade400, 
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                    hintText: 'password',
+                    hintStyle: TextStyle(color: Colors.red.shade400),
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: screenHeight * 0.015,
+                      horizontal: screenWidth * 0.05,
                     ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(color: Colors.orange.shade200, width: 1.5),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(color: Colors.deepOrange, width: 2),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureText ? Icons.visibility : Icons.visibility_off,
-                        color: Colors.red.shade400, // เปลี่ยนสีไอคอน
+                        _obscureText
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.red.shade400,
+                        size: screenWidth * 0.05,
                       ),
                       onPressed: _togglePasswordVisibility,
                     ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide:
+                          BorderSide(color: Colors.orange.shade200, width: 1.5),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide:
+                          const BorderSide(color: Colors.deepOrange, width: 2),
+                    ),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your Password';
-                    }
-                    return null;
-                  },
+                  validator: (value) =>
+                      value!.isEmpty ? 'Please enter your Password' : null,
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: screenHeight * 0.02),
 
-                // ข้อความ Register
                 Align(
                   alignment: Alignment.centerLeft,
                   child: TextButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Go to Register Page!')),
-                      );
-                    },
+                    onPressed: () {},
                     child: const Text(
                       'Register',
                       style: TextStyle(
                         color: Colors.deepOrange,
-                        fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 40),
 
-                //ปุ่ม LOGIN
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.orange.shade300.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 10,
-                        offset: const Offset(0, 5),
-                      ),
-                    ],
-                  ),
+                SizedBox(height: screenHeight * 0.03),
+
+                SizedBox(
+                  width: 130,
+                  height: screenHeight * 0.06,
                   child: ElevatedButton(
                     onPressed: _handleLogin,
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 60),
                       backgroundColor: Colors.white,
-                      foregroundColor: Colors.deepOrange, // สีตัวอักษร
+                      foregroundColor: Colors.deepOrange,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
-                        side: const BorderSide(color: Colors.deepOrange, width: 2),
+                        side: const BorderSide(
+                            color: Colors.deepOrange, width: 1.5),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
-                    child: const Text(
+                    child: Text(
                       'LOGIN',
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: screenWidth * 0.04,
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 1.5,
                       ),
                     ),
                   ),
