@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'register.dart';
+import 'package:borrow_1/Student/student_browse_list.dart'; // ใช้ path ตามโปรเจกต์ของคุณ
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -18,13 +19,47 @@ class _LoginState extends State<Login> {
     setState(() => _obscureText = !_obscureText);
   }
 
+  // ⬇️⬇️⬇️ นี่คือส่วนที่แก้ไขตามที่คุณขอ ⬇️⬇️⬇️
   void _handleLogin() {
+    // 1. ตรวจสอบว่ากรอกข้อมูลครบ (validate)
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Login Successful!')));
+      
+      // 2. ดึงค่า username และ password จาก controller
+      String username = _usernameController.text;
+      String password = _passwordController.text;
+
+      // 3. ตรวจสอบว่าตรงกับ "student" และ "123456"
+      if (username == "student" && password == "123456") {
+        // --- ล็อกอินสำเร็จ ---
+        // นำทางไปยังหน้า BrowseAssetScreen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const BrowseAssetScreen()),
+        );
+      } else {
+        // --- ล็อกอินไม่สำเร็จ ---
+        // แสดง SnackBar แจ้งเตือน
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Username หรือ Password ไม่ถูกต้อง'),
+            backgroundColor: Colors.red, // สีพื้นหลังแจ้งเตือน
+          ),
+        );
+      }
     }
   }
+  // ⬆️⬆️⬆️ จบส่วนที่แก้ไข ⬆️⬆️⬆️
+
+
+  // ⬇️⬇️⬇️ เพิ่มส่วนนี้เพื่อคืน Memory เมื่อปิดหน้า ⬇️⬇️⬇️
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+  // ⬆️⬆️⬆️ จบส่วนที่เพิ่ม ⬆️⬆️⬆️
+
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +179,7 @@ class _LoginState extends State<Login> {
                       style: TextButton.styleFrom(
                         padding:
                             EdgeInsets.zero, // เอา padding ออกเพื่อให้ดูเนียน
-                        minimumSize: Size(0, 0),
+                        minimumSize: const Size(0, 0),
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       onPressed: () {
@@ -173,7 +208,7 @@ class _LoginState extends State<Login> {
                   width: 130,
                   height: screenHeight * 0.06,
                   child: ElevatedButton(
-                    onPressed: _handleLogin,
+                    onPressed: _handleLogin, // <--- เรียกใช้ฟังก์ชันที่แก้ไขแล้ว
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.deepOrange,
