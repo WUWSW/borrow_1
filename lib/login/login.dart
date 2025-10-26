@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'register.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -19,9 +20,9 @@ class _LoginState extends State<Login> {
 
   void _handleLogin() {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login Successful!')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Login Successful!')));
     }
   }
 
@@ -78,13 +79,17 @@ class _LoginState extends State<Login> {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      borderSide:
-                          BorderSide(color: Colors.orange.shade200, width: 1.5),
+                      borderSide: BorderSide(
+                        color: Colors.orange.shade200,
+                        width: 1.5,
+                      ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      borderSide:
-                          const BorderSide(color: Colors.deepOrange, width: 2),
+                      borderSide: const BorderSide(
+                        color: Colors.deepOrange,
+                        width: 2,
+                      ),
                     ),
                   ),
                   validator: (value) =>
@@ -105,9 +110,7 @@ class _LoginState extends State<Login> {
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureText
-                            ? Icons.visibility
-                            : Icons.visibility_off,
+                        _obscureText ? Icons.visibility : Icons.visibility_off,
                         color: Colors.red.shade400,
                         size: screenWidth * 0.05,
                       ),
@@ -115,13 +118,17 @@ class _LoginState extends State<Login> {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      borderSide:
-                          BorderSide(color: Colors.orange.shade200, width: 1.5),
+                      borderSide: BorderSide(
+                        color: Colors.orange.shade200,
+                        width: 1.5,
+                      ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      borderSide:
-                          const BorderSide(color: Colors.deepOrange, width: 2),
+                      borderSide: const BorderSide(
+                        color: Colors.deepOrange,
+                        width: 2,
+                      ),
                     ),
                   ),
                   validator: (value) =>
@@ -129,15 +136,32 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: screenHeight * 0.02),
 
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'Register',
-                      style: TextStyle(
-                        color: Colors.deepOrange,
-                        fontWeight: FontWeight.w600,
+                SizedBox(
+                  width: double.infinity,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding:
+                            EdgeInsets.zero, // เอา padding ออกเพื่อให้ดูเนียน
+                        minimumSize: Size(0, 0),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Register(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Register',
+                        style: TextStyle(
+                          color: Colors.deepOrange,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
@@ -156,7 +180,9 @@ class _LoginState extends State<Login> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                         side: const BorderSide(
-                            color: Colors.deepOrange, width: 1.5),
+                          color: Colors.deepOrange,
+                          width: 1.5,
+                        ),
                       ),
                     ),
                     child: Text(
