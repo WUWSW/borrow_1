@@ -194,6 +194,8 @@ class _RegisterState extends State<Register> {
                   validator: (value) {
                     if (value != _passwordController.text) {
                       return 'Passwords do not match';
+                    } else if (value == null || value.isEmpty) {
+                      return 'Please enter a password';
                     }
                     return null;
                   },
