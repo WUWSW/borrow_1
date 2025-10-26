@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'register.dart';
-import 'package:borrow_1/Student/student_browse_list.dart'; // ใช้ path ตามโปรเจกต์ของคุณ
+import 'package:borrow_1/Student/student_browse_list.dart'; 
+import 'package:borrow_1/Lender/lender_browse_list.dart'; 
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -30,11 +31,14 @@ class _LoginState extends State<Login> {
 
       // 3. ตรวจสอบว่าตรงกับ "student" และ "123456"
       if (username == "student" && password == "123456") {
-        // --- ล็อกอินสำเร็จ ---
-        // นำทางไปยังหน้า BrowseAssetScreen
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const BrowseAssetScreen()),
+          MaterialPageRoute(builder: (context) => const BrowseStudent()),
+        );
+      } else if (username == "lender" && password == "456789") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const BrowseLender()),
         );
       } else {
         // --- ล็อกอินไม่สำเร็จ ---

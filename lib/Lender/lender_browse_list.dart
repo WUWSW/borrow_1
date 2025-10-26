@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 
 // === หน้าจอหลัก ===
-class BrowseStudent extends StatefulWidget {
-  const BrowseStudent({super.key});
+class BrowseLender extends StatefulWidget {
+  const BrowseLender({super.key});
 
   @override
-  State<BrowseStudent> createState() => _BrowseStudentState();
+  State<BrowseLender> createState() => _BrowseLenderState();
 }
 
-class _BrowseStudentState extends State<BrowseStudent> {
+class _BrowseLenderState extends State<BrowseLender> {
   // ข้อมูลจำลองสำหรับเกม
 final List<Map<String, String>> games = [
   {'title': 'Exploding Kittens', 'image': 'img/Exploding Kitten.webp'},
@@ -51,7 +51,7 @@ final List<Map<String, String>> games = [
                       ),
                     ),
                     Text(
-                      'Welcome Student',
+                      'Welcome Lender',
                       style: TextStyle(
                         color: Colors.grey[700],
                         fontSize: 18,
