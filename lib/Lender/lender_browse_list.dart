@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-
-// === หน้าจอหลัก ===
+import 'see_request.dart'; 
 class BrowseLender extends StatefulWidget {
   const BrowseLender({super.key});
 
@@ -24,6 +22,37 @@ final List<Map<String, String>> games = [
   // หมวดหมู่จำลอง
   final List<String> categories = ['Family', 'Party', 'Bluffing', 'Abstract', 'Dice'];
   String selectedCategory = 'Family';
+
+
+  // ⬇️ 2. เพิ่มฟังก์ชันสำหรับจัดการการกด Bottom Nav Bar ⬇️
+  void _onNavItemTapped(int index) {
+    switch (index) {
+      case 0:
+        // (Games) - เราอยู่ที่หน้านี้แล้ว ไม่ต้องทำอะไร
+        break;
+      case 1:
+        // (Stats/Requests) - ⭐️ นี่คือส่วนที่ไปหน้า See Requests ⭐️
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Seelender_requests()),
+        );
+        break;
+      case 2:
+        // (Bookings) - TODO: สร้างหน้า Bookings
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Navigate to Bookings (Not Implemented)')),
+        );
+        break;
+      case 3:
+        // (Logout) - TODO: ใส่ Logic การ Logout
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Logout Tapped (Not Implemented)')),
+        );
+        break;
+    }
+  }
+  // ⬆️ จบส่วนที่เพิ่ม ⬆️
+
 
   @override
   Widget build(BuildContext context) {
@@ -164,6 +193,8 @@ final List<Map<String, String>> games = [
   // === ส่วน Bottom Navigation ===
   Widget _buildBottomNav() {
     return BottomNavigationBar(
+      // ⬇️ 3. เพิ่ม onTap ตรงนี้ ⬇️
+      onTap: _onNavItemTapped, 
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.style_outlined),
@@ -179,19 +210,14 @@ final List<Map<String, String>> games = [
           icon: Icon(Icons.calendar_today_outlined), // ไอคอนปฏิทิน (ตรงกับภาพ screenshot)
           activeIcon: Icon(Icons.calendar_today),
           label: 'Bookings',
-        ),
-        
-        // ⬇️⬇️⬇️ แก้ไขไอคอน Logout ตรงนี้ ⬇️⬇️⬇️
+        ),  
         BottomNavigationBarItem(
-          // เปลี่ยนจาก Icons.logout_outlined เป็น Icons.logout 
-          // เพื่อให้ตรงกับในรูปภาพ ที่เป็นไอคอนแบบทึบตลอดเวลา
-          icon: Icon(Icons.logout), 
+        icon: Icon(Icons.logout), 
           activeIcon: Icon(Icons.logout),
           label: 'Logout',
         ),
-        // ⬆️⬆️⬆️ จบส่วนที่แก้ไข ⬆️⬆️⬆️
       ],
-      currentIndex: 0,
+      currentIndex: 0, // ⭐️ หน้านี้คือ index 0 (Games)
       selectedItemColor: Colors.orange[800],
       unselectedItemColor: Colors.grey[600],
       showSelectedLabels: false,
